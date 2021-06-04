@@ -1,5 +1,9 @@
 const Song = require('../models/Song');
 
+//multer
+const upload = require('./middleware/multer');
+const getImageFile = upload.single('photo');
+
 exports.add = (req, res) => {
   const { name, artist, emotion, spotifyUrl, youtubeUrl } = req.body;
 
@@ -23,4 +27,18 @@ exports.add = (req, res) => {
     .catch((err) => {
       res.status(500).json(err);
     });
+};
+
+exports.propose = (req, res) => {
+  getImageFile(req, res, async function (err) {
+    if (err) {
+      return res
+        .json({
+          errors: [{ title: 'File Upload Error', details: err.message }],
+        })
+        .status(404);
+    }
+
+    res.json('Photo is pulled!');
+  });
 };
