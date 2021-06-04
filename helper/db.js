@@ -8,7 +8,7 @@ module.exports = () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useFindAndModify: false,
-    }
+    },
   );
   mongoose.connection.on('open', () => {
     console.log('MongoDB: Connected');

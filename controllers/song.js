@@ -61,7 +61,7 @@ exports.propose = (req, res) => {
       (err, httpResponse, emotionPred) => {
         if (err) res.status(404).json(err);
         res.json(JSON.parse(emotionPred));
-      }
+      },
     );
   });
 };
