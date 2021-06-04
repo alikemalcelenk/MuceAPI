@@ -2,6 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const should = chai.should();
 const server = require('../app');
+const fs = require('fs');
 chai.use(chaiHttp);
 
 describe('/song tests', () => {
@@ -29,6 +30,28 @@ describe('/song tests', () => {
           res.body.song.should.have.property('emotion').eql(song.emotion);
           res.body.song.should.have.property('youtubeUrl').eql(song.youtubeUrl);
           res.body.song.should.have.property('spotifyUrl').eql(song.spotifyUrl);
+          res.body.song.should.have.property('created_at');
+          done();
+        });
+    });
+  });
+
+  describe('/propose', () => {
+    it('it should POST a image', (done) => {
+      chai
+        .request(server)
+        .post('/song/propose')
+        .attach('photo', fs.readFileSync(`${__dirname}/test.jpeg`), 'test.jpeg')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('song');
+          res.body.song.should.have.property('_id');
+          res.body.song.should.have.property('name');
+          res.body.song.should.have.property('artist');
+          res.body.song.should.have.property('emotion');
+          res.body.song.should.have.property('youtubeUrl');
+          res.body.song.should.have.property('spotifyUrl');
           res.body.song.should.have.property('created_at');
           done();
         });
