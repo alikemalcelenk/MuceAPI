@@ -1,8 +1,14 @@
-const Song = require('../models/Song');
+const request = require('request');
 
 //multer
 const upload = require('./middleware/multer');
 const getImageFile = upload.single('photo');
+
+//models
+const Song = require('../models/Song');
+
+//config
+const env = require('../config/environment');
 
 exports.add = (req, res) => {
   const { name, artist, emotion, spotifyUrl, youtubeUrl } = req.body;
@@ -39,6 +45,23 @@ exports.propose = (req, res) => {
         .status(404);
     }
 
-    res.json('Photo is pulled!');
+    request.post(
+      {
+        url: env.FER_SERVICE_API + '/upload',
+        formData: {
+          image: {
+            value: req.file.buffer, // Give your node.js buffer to here
+            options: {
+              filename: req.file.originalname, // filename
+              contentType: req.file.mimetype, // file content-type
+            },
+          },
+        },
+      },
+      (err, httpResponse, emotionPred) => {
+        if (err) res.status(404).json(err);
+        res.json(JSON.parse(emotionPred));
+      }
+    );
   });
 };
