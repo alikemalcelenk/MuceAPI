@@ -3,6 +3,8 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const swaggerUI = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
 
 const indexRouter = require('./routes/index');
 const songRouter = require('./routes/song');
@@ -11,6 +13,34 @@ const app = express();
 
 //db connection
 const db = require('./helper/db')();
+
+//cors
+const cors = require('cors');
+app.use(cors());
+
+//swagger
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Muce API',
+      version: '1.0.0',
+      description: 'Muce Base API Service.',
+    },
+    servers: [
+      {
+        url: 'https://muce-api.herokuapp.com',
+      },
+      {
+        url: 'http://localhost:3000',
+      },
+    ],
+  },
+  apis: ['./routes/*.js'],
+};
+
+const specs = swaggerJsdoc(options);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
