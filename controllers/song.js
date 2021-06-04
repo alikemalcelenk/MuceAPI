@@ -50,17 +50,32 @@ exports.propose = (req, res) => {
         url: env.FER_SERVICE_API + '/upload',
         formData: {
           image: {
-            value: req.file.buffer, // Give your node.js buffer to here
+            value: req.file.buffer,
             options: {
-              filename: req.file.originalname, // filename
-              contentType: req.file.mimetype, // file content-type
+              filename: req.file.originalname,
+              contentType: req.file.mimetype,
             },
           },
         },
       },
       (err, httpResponse, emotionPred) => {
-        if (err) res.status(404).json(err);
-        res.json(JSON.parse(emotionPred));
+        if (err) res.status(500).json(err);
+
+        //propose randomly a song
+        Song.aggregate([
+          {
+            $match: {
+              emotion: JSON.parse(emotionPred).emotion,
+            },
+          },
+          { $sample: { size: 1 } },
+        ])
+          .then((song) => {
+            res.json({ song: song[0] });
+          })
+          .catch((err) => {
+            res.status(500).json(err);
+          });
       },
     );
   });
