@@ -11,11 +11,12 @@ const Song = require('../models/Song');
 const env = require('../config/environment');
 
 exports.add = (req, res) => {
-  const { name, artist, emotion, spotifyUrl, youtubeUrl } = req.body;
+  const { name, artist, coverArt, emotion, spotifyUrl, youtubeUrl } = req.body;
 
   const newSong = new Song({
     name,
     artist,
+    coverArt,
     emotion,
     spotifyUrl,
     youtubeUrl,

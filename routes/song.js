@@ -11,6 +11,7 @@ const router = require('express').Router();
  *       required:
  *         - name
  *         - artist
+ *         - coverArt
  *         - emotion
  *         - youtubeUrl
  *         - spotifyUrl
@@ -21,6 +22,9 @@ const router = require('express').Router();
  *         name:
  *           type: string
  *           description: The song name
+ *         coverArt:
+ *           type: string
+ *           description: The cover art of the song
  *         artist:
  *           type: string
  *           description: Artist of the song
@@ -40,6 +44,7 @@ const router = require('express').Router();
  *         _id: 607352f10179b40015e33956
  *         name: Happy
  *         artist: Pharrell Williams
+ *         coverArt: https://artwollect-images.s3.eu-central-1.amazonaws.com/1623069468316
  *         emotion: happy
  *         youtubeUrl: https://www.youtube.com/watch?v=ZbZSe6N_BXs
  *         spotifyUrl: https://open.spotify.com/track/60nZcImufyMA1MKQY3dcCH?si=fae83bd471a94c1c
@@ -69,6 +74,8 @@ const router = require('express').Router();
  *                name:
  *                   type: string
  *                artist:
+ *                   type: string
+ *                coverArt:
  *                   type: string
  *                emotion:
  *                   type: string

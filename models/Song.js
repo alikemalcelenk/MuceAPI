@@ -10,6 +10,10 @@ const SongSchema = new Schema({
     type: String,
     required: [true, '`{PATH}` is necessary.'],
   },
+  coverArt: {
+    type: String,
+    required: [true, '`{PATH}` is necessary.'],
+  },
   emotion: {
     type: String,
     required: [true, '`{PATH}` is necessary.'],
